@@ -110,8 +110,9 @@ DATABASES = {
         'USER': 'wrpzqgsh',
         'PASSWORD': 'T7nJSqu4D79M53ZkAnk0cEN-U9-DQh0X',
         'HOST': 'raja.db.elephantsql.com',
-        'PORT': '5432'
-    }
+        'PORT': '5432',
+    },
+    
 }
 
 
