@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from api.api_views import UserList, GameApiView
+from api.api_views import UserList, GameApiView, GameList, GameDetail, MoveApiView
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^rest-auth/registration', include('rest_auth.registration.urls')),
     url(r'^players/$', UserList.as_view()),
     url(r'^create-game/$', GameApiView.as_view()),
+    url(r'^games/$', GameList.as_view()),
+    url(r'^game-detail/(?P<identifier>[0-9A-Za-z_\-]+)/$', GameDetail.as_view()),
+    url(r'^games/(?P<identifier>[0-9A-Za-z_\-]+)/moves/$', MoveApiView.as_view()),
 ]

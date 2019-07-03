@@ -21,11 +21,16 @@ class Game(models.Model):
         User
     )
 
-    winner = models.CharField(
-        max_length=500,
-        null=True
+    winner = models.ForeignKey(
+        User,
+        null=True,
+        related_name="winner"
     )
 
+    last_move = models.IntegerField(
+        null=True
+    )
+    
     board = ArrayField(models.IntegerField(null=True),size=9)
     
 

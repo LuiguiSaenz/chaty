@@ -3,3 +3,4 @@ djangorestframework==3.6.2
 django-rest-auth
 django-allauth
 psycopg2
+arrow
