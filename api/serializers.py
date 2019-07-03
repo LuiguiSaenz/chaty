@@ -43,13 +43,6 @@ class GameSerializer(serializers.Serializer):
             if not invited_exists:
                 raise serializers.ValidationError('The invited user does not exist')
 
-            game = Game.objects.filter(Q(player1_id=self.initial_data["creator"],
-                                   status="progress") |
-                                   Q(player2_id=self.initial_data["creator"],
-                                   status="progress")).exists()
-            if game:
-                raise serializers.ValidationError('You are already participating in a game in progress')
-
             game = Game.objects.filter(Q(player1_id=value,
                                    status="progress") |
                                    Q(player2_id=value,
@@ -61,6 +54,16 @@ class GameSerializer(serializers.Serializer):
         else:
             raise serializers.ValidationError('Id of invited is not integer')
 
+    def validate_creator(self, value):
+        game = Game.objects.filter(Q(player1_id=value,
+                                   status="progress") |
+                                   Q(player2_id=value,
+                                   status="progress")).exists()
+        if game:
+            raise serializers.ValidationError('You are already participating in a game in progress')
+
+        return value
+        
     def create(self, validated_data):
         creator = User.objects.get(pk=validated_data.get("creator"))
         invited = User.objects.get(pk=validated_data.get("invited"))

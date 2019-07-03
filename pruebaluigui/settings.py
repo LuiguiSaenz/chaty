@@ -61,7 +61,8 @@ ROOT_URLCONF = 'pruebaluigui.urls'
 
 SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_EMAIL_REQUIRED = True   
+ACCOUNT_EMAIL_REQUIRED = True  
+ACCOUNT_AUTHENTICATION_METHOD = 'email' 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -91,6 +92,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pruebaluigui.wsgi.application'
 
+AUTHENTICATION_BACKENDS = (
+ # Needed to login by username in Django admin, regardless of `allauth`
+ "django.contrib.auth.backends.ModelBackend",
+
+ # `allauth` specific authentication methods, such as login by e-mail
+ "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

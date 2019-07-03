@@ -111,23 +111,28 @@ class MoveApiView(APIView):
             return Response(ErrorMessageResponseSerializer(
                 ErrorMessageResponse(api_errors.GAME_DONE)
             ).data)
+        if request.data.get('position'):
+            data = request.data.dict()
+            data["player"] = request.user.id
+            data["identifier"] = identifier
+            move_serializer = MoveSerializer(data=data)
+            if move_serializer.is_valid():
+                move = move_serializer.save()
+                return Response(MoveResponseSerializer(
+                    MoveResponse(move)
+                ).data)
+            else:
+                errors = move_serializer.errors
+                all_errors = ReturnDict(
+                    list(errors.items()) + [("error_code",[1006])],
+                    serializer = errors.serializer
+                )
+                return Response(all_errors,status = status.HTTP_400_BAD_REQUEST)
         
-        data = request.data.dict()
-        data["player"] = request.user.id
-        data["identifier"] = identifier
-        move_serializer = MoveDetailSerializer(data=data)
-        if move_serializer.is_valid():
-            move = move_serializer.save()
-            return Response(MoveResponseSerializer(
-                MoveResponse(move)
-            ).data)
         else:
-            errors = move_serializer.errors
-            all_errors = ReturnDict(
-                list(errors.items()) + [("error_code",[1006])],
-                serializer = errors.serializer
-            )
-            return Response(all_errors,status = status.HTTP_400_BAD_REQUEST)
+            return Response(ErrorMessageResponseSerializer(
+                ErrorMessageResponse(api_errors.POSITION_NOT_SENT)
+            ).data)
 
     
     def get(self, request, identifier, format=None):
