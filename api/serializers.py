@@ -186,12 +186,10 @@ class MoveSerializer(serializers.Serializer):
         # filas
         index = 0
         while index < len(board):
-            print(index, 'fila')
             if board[index] is None:
                 index = index + 3
                 continue
             if board[index] == board[index+1] and board[index+1] == board[index+2]:
-                print('entro')
                 game.winner_id = validated_data.get("player")
                 game.status = 'done'
                 game.save()
@@ -200,7 +198,6 @@ class MoveSerializer(serializers.Serializer):
         # columnas
         index = 0
         while index < (len(board)/3):
-            print(index, 'columna')
             if board[index] is None:
                 index = index + 1
                 continue
@@ -210,15 +207,13 @@ class MoveSerializer(serializers.Serializer):
                 game.save()
                 return game
             index = index + 1
-
+        # Diagonales
         if board[0] and board[0] == board[4] and board[4] == board[8]:
-            print(7)
             game.winner_id = validated_data.get("player")
             game.status = 'done'
             game.save()
             return game
         if board[2] and board[2] == board[4] and board[4] == board[6]:
-            print(8)
             game.winner_id = validated_data.get("player")
             game.status = 'done'
             game.save()
@@ -242,3 +237,12 @@ class MoveResponse(object):
         game_info["board"] = game.board
         game_info["winner"] = game.winner.id if game.winner else None
         self.game = game_info
+
+
+class MoveDetailSerializer(serializers.Serializer):
+    board = serializers.SerializerMethodField()
+    class Meta:
+        model = Game
+    
+    def get_board(self, game):
+        return game.board 

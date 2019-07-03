@@ -6,7 +6,7 @@ from .serializers import UserResponseSerializer, UserResponse, \
                     GameSerializer, GameResponseSerializer, GameResponse, \
                     GameListResponseSerializer, GameListResponse, \
                     GameListSerializer, MoveResponseSerializer, \
-                    MoveSerializer, MoveResponse
+                    MoveSerializer, MoveResponse, MoveDetailSerializer
 from rest_framework import permissions
 from pruebaluigui.serializers import ErrorMessageResponseSerializer, ErrorMessageResponse
 from pruebaluigui import api_errors
@@ -115,7 +115,7 @@ class MoveApiView(APIView):
         data = request.data.dict()
         data["player"] = request.user.id
         data["identifier"] = identifier
-        move_serializer = MoveSerializer(data=data)
+        move_serializer = MoveDetailSerializer(data=data)
         if move_serializer.is_valid():
             move = move_serializer.save()
             return Response(MoveResponseSerializer(
@@ -128,3 +128,14 @@ class MoveApiView(APIView):
                 serializer = errors.serializer
             )
             return Response(all_errors,status = status.HTTP_400_BAD_REQUEST)
+
+    
+    def get(self, request, identifier, format=None):
+        try:
+            game = Game.objects.get(identifier=identifier)
+        except:
+            return Response(ErrorMessageResponseSerializer(
+                ErrorMessageResponse(api_errors.IDENTIFIER_INVALID_SENT)
+            ).data)
+        
+        return Response(MoveDetailSerializer(game, many=False).data)

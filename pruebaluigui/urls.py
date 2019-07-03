@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^players/$', UserList.as_view()),
     url(r'^create-game/$', GameApiView.as_view()),
     url(r'^games/$', GameList.as_view()),
-    url(r'^game-detail/(?P<identifier>[0-9A-Za-z_\-]+)/$', GameDetail.as_view()),
+    url(r'^games/(?P<identifier>[0-9A-Za-z_\-]+)/$', GameDetail.as_view()),
     url(r'^games/(?P<identifier>[0-9A-Za-z_\-]+)/moves/$', MoveApiView.as_view()),
 ]
