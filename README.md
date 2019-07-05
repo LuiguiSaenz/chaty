@@ -11,3 +11,8 @@ pip install -r requirements.txt
 
 # LEVANTAMOS EL PROYECTO
 python manage.py runserver 8080
+
+# LINK DEL DEMO
+
+
+http://18.218.14.83/
