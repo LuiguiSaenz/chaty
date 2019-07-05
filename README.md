@@ -3,7 +3,11 @@
 virtualenv env
 
 # ACTIVAMOS EL ENTORNO VIRTUAL
+En windows:
 env\Scripts\activate
+
+En ubuntu:
+source env/bin/activate
 
 # INSTALAMOS DEPENDENCIAS
 cd pruebaluigui
